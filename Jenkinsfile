@@ -17,7 +17,9 @@ pipeline {
 	stage('Deploy'){
         agent none
         steps {
-			docker.build("sbamihan/datarest")
+			script{
+                def image = docker.build("sbamihan/data-rest", ' .')
+            }
         }
     }
   }
