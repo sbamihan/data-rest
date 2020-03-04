@@ -35,12 +35,6 @@ pipeline {
 			agent any
 			steps {
 				sh 'docker run --rm -p 8088:8080 sherwinamihan/data-rest:latest --name data-rest'
-				/*script{
-					docker.image('sherwinamihan/data-rest:latest').withRun('--rm -p 8088:8080 --name data-rest') { c ->
-						/* Run some tests which require MySQL */
-						sh 'echo data-rest application is running at http://localhost:8088'
-					}
-				}*/
 			}
 		}
 	}
