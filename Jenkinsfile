@@ -3,7 +3,7 @@ pipeline {
 	
 	stages {
 		stage('Clone repository') {
-			checkout scm
+			git 'https://github.com/sbamihan/data-rest.git'
 		}
 	}
 	
