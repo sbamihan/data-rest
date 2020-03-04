@@ -36,7 +36,7 @@ pipeline {
 			steps {
 				//sh 'docker run sherwinamihan/data-rest:latest'
 				script{
-					docker.image('sherwinamihan/data-rest:latest').withRun('-p 8088:8080 --name data-rest') { c ->
+					docker.image('sherwinamihan/data-rest:latest').withRun('--rm -p 8088:8080 --name data-rest') { c ->
 						/* Wait until mysql service is up */
 						sh 'while ! data-rest ping -h0.0.0.0 --silent; do sleep 1; done'
 						/* Run some tests which require MySQL */
