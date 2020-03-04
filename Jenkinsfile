@@ -34,7 +34,7 @@ pipeline {
 		stage('Run Image') {
 			agent any
 			steps {
-				sh 'docker run --rm -p 8088:8080 sherwinamihan/data-rest:latest --name data-rest'
+				sh 'docker run --rm -d -p 8088:8080 sherwinamihan/data-rest:latest --name data-rest'
 			}
 		}
 	}
