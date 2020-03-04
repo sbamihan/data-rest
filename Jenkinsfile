@@ -35,6 +35,7 @@ pipeline {
 			agent any
 			steps {
 				sh 'docker run --rm -d -p 8088:8080 sherwinamihan/data-rest:latest --name data-rest'
+				sh 'data-rest application is now running at http://localhost:8088'
 			}
 		}
 	}
