@@ -13,6 +13,7 @@ pipeline {
 				stash includes: 'target/*.jar', name: 'targetfiles'
 			}
 		}
+		
 		stage('Build Image'){
 			steps {
 				script{
@@ -20,12 +21,20 @@ pipeline {
 				}
 			}
 		}
+		
 		stage('Push Image') {
 			agent any
 			steps {
 				withDockerRegistry([ credentialsId: "dockerHub", url: "" ]) {
 					sh 'docker push sherwinamihan/data-rest:latest'
 				}
+			}
+		}
+		
+		stage('Run Image') {
+			agent any
+			steps {
+				sh 'docker run sherwinamihan/data-rest:latest'
 			}
 		}
 	}
