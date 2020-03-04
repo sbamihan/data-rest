@@ -24,7 +24,7 @@ pipeline {
 			agent any
 			steps {
 				withDockerRegistry([ credentialsId: "dockerHub", url: "" ]) {
-					sh 'docker push sherwinamihan/data-rest:latest'
+					sh 'docker push sbamihan/data-rest:latest'
 				}
 			}
 		}
