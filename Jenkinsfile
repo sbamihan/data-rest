@@ -34,7 +34,15 @@ pipeline {
 		stage('Run Image') {
 			agent any
 			steps {
-				sh 'docker run -p 8088:8080 sherwinamihan/data-rest:latest'
+				//sh 'docker run sherwinamihan/data-rest:latest'
+				script{
+					docker.image('sherwinamihan/data-rest:latest').withRun('-e -p 8088:8080') { c ->
+					/* Wait until mysql service is up */
+					sh 'while ! data-rest ping -h0.0.0.0 --silent; do sleep 1; done'
+					/* Run some tests which require MySQL */
+					sh 'echo data-rest application is running at http://localhost:8088'
+				}
+				}
 			}
 		}
 	}
