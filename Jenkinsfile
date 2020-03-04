@@ -16,11 +16,11 @@ pipeline {
 		stage('Build Image'){
 			steps {
 				script{
-					def image = docker.build("sbamihan/data-rest", ' .')
+					def image = docker.build("sherwinamihan/data-rest", ' .')
 				}
 			}
 		}
-		stage('Docker Push') {
+		stage('Push Image') {
 			agent any
 			steps {
 				withDockerRegistry([ credentialsId: "dockerHub", url: "" ]) {
