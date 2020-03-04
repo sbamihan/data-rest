@@ -1,11 +1,6 @@
 pipeline {
 	agent any
 	stages{
-		stage('Clone Repository'){
-			steps {
-				git 'https://github.com/sbamihan/data-rest.git'
-			}
-		}
 		stage('Build Jar'){
 			agent {
 				docker {
