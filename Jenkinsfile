@@ -13,7 +13,7 @@ pipeline {
 				stash includes: 'target/*.jar', name: 'targetfiles'
 			}
 		}
-		stage('Deploy'){
+		stage('Build Image'){
 			steps {
 				script{
 					def image = docker.build("sbamihan/data-rest", ' .')
