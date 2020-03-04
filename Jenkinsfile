@@ -1,6 +1,12 @@
 pipeline {
   agent none
   stages{
+	stage('Clone Repository'){
+        agent none
+        steps {
+			git 'https://github.com/sbamihan/data-rest.git'
+        }
+    }
 	stage('Build Jar'){
         agent {
           docker {
@@ -9,7 +15,6 @@ pipeline {
           }
         }
         steps {
-			git 'https://github.com/sbamihan/data-rest.git'
 			sh 'mvn package'
             stash includes: 'target/*.jar', name: 'targetfiles'
         }
