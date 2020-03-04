@@ -1,7 +1,16 @@
 node {
-  stage 'Checkout'
-  git url: 'https://github.com/sbamihan/data-rest.git'
+    def app
 
-  stage 'build'
-  docker.build('mobycounter')
+    stage('Clone repository') {
+        /* Let's make sure we have the repository cloned to our workspace */
+
+        checkout scm
+    }
+
+    stage('Build image') {
+        /* This builds the actual image; synonymous to
+         * docker build on the command line */
+
+        app = docker.build("sbamihan/datarest")
+    }
 }
