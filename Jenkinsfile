@@ -9,9 +9,15 @@ pipeline {
           }
         }
         steps {
-	   git 'https://github.com/sbamihan/data-rest.git'
-	   sh 'mvn package'
-           stash includes: 'target/*.jar', name: 'targetfiles'
+			git 'https://github.com/sbamihan/data-rest.git'
+			sh 'mvn package'
+            stash includes: 'target/*.jar', name: 'targetfiles'
+        }
+    }
+	stage('Deploy'){
+        agent none
+        steps {
+			docker.build("sbamihan/datarest")
         }
     }
   }
