@@ -1,13 +1,11 @@
 pipeline {
-	agent { docker 'maven:3-alpine' }
-	
+	agent none
 	stages {
+		agent { docker 'maven:3-alpine' }
 		stage('Clone repository') {
 			git 'https://github.com/sbamihan/data-rest.git'
 		}
-	}
-	
-	stages {
+		
 		stage('Build Jar') {
 			steps {
 				sh 'mvn package'
