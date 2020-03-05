@@ -1,11 +1,33 @@
 pipeline {
 	agent any
 	stages{
-		stage('OC'){
+		stage('Build Artifact'){
+			agent {
+				docker {
+					image 'maven:3-alpine'
+					args '-v /root/.m2:/root/.m2'
+				}
+			}
 			steps {
-				//tool name: 'OC', type: 'oc'
-				sh 'oc login --token=AwFWoKk2-IynQ4FoxRkb-nDSnUL21ufUcWABZAPdzrI --server=https://api.us-east-1.starter.openshift-online.com:6443'
-				sh 'oc projects'
+				sh 'mvn package'
+				stash includes: 'target/*.jar', name: 'targetfiles'
+			}
+		}
+		
+		stage('Build Image'){
+			steps {
+				script{
+					def image = docker.build("sherwinamihan/data-rest", ' .')
+				}
+			}
+		}
+		
+		stage('Push Image') {
+			agent any
+			steps {
+				withDockerRegistry([ credentialsId: "dockerHub", url: "" ]) {
+					sh 'docker push sherwinamihan/data-rest:latest'
+				}
 			}
 		}
 	}
