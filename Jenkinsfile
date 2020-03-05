@@ -1,33 +1,28 @@
-node {
-    def app
-
-    stage('Clone repository') {
-        /* Cloning the Repository to our Workspace */
-
-        checkout scm
-    }
-
-    stage('Build Image') {
-        /* This builds the actual image */
-
-        app = docker.build("sherwinamihan/data-rest")
-    }
-
-    stage('Test Image') {
-        
-        app.inside {
-            echo "Tests passed"
-        }
-    }
-
-    stage('Push Image') {
-        /* 
-			You would need to first register with DockerHub before you can push images to your account
-		*/
-        docker.withRegistry([credentialsId: "dockerHub", url: ""]) {
-            app.push("${env.BUILD_NUMBER}")
-            app.push("latest")
-            } 
-                echo "Trying to Push Docker Build to DockerHub"
-    }
+pipeline {
+	agent any
+	stages{
+		stage('Build Artifact'){
+			steps {
+				sh 'mvn package'
+				stash includes: 'target/*.jar', name: 'targetfiles'
+			}
+		}
+		
+		stage('Build Image'){
+			steps {
+				script{
+					def image = docker.build("sherwinamihan/data-rest", ' .')
+				}
+			}
+		}
+		
+		stage('Push Image') {
+			agent any
+			steps {
+				withDockerRegistry([ credentialsId: "dockerHub", url: "" ]) {
+					sh 'docker push sherwinamihan/data-rest:latest'
+				}
+			}
+		}
+	}
 }
