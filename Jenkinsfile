@@ -7,24 +7,24 @@ node {
         checkout scm
     }
 
-    stage('Build image') {
+    stage('Build Image') {
         /* This builds the actual image */
 
         app = docker.build("sherwinamihan/data-rest")
     }
 
-    stage('Test image') {
+    stage('Test Image') {
         
         app.inside {
             echo "Tests passed"
         }
     }
 
-    stage('Push image') {
+    stage('Push Image') {
         /* 
 			You would need to first register with DockerHub before you can push images to your account
 		*/
-        docker.withRegistry('https://registry.hub.docker.com', 'dockerHub') {
+        docker.withRegistry('', 'dockerHub') {
             app.push("${env.BUILD_NUMBER}")
             app.push("latest")
             } 
