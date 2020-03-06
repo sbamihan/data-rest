@@ -35,6 +35,6 @@ node {
     }
     
     stage ('Run') {
-        docker.image("sherwinamihan/data-rest:${env.BUILD_NUMBER}").run('-p 8088:8080 --name data-rest')
+        docker.image("sherwinamihan/data-rest:${env.BUILD_NUMBER}").run('--rm -p 8088:8080 --name data-rest')
     }
 }
