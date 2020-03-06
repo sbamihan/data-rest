@@ -33,4 +33,8 @@ node {
             app.push("latest")
         }
     }
+    
+    stage ('Run') {
+        docker.image("sherwinamihan/data-rest:${env.BUILD_NUMBER}").run('-p 8088:8080')
+    }
 }
