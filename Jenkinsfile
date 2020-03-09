@@ -7,10 +7,13 @@ node {
         checkout scm
     }
     
-    stage('Build Jar'){
-		sh 'mvn package'
-        stash includes: 'target/*.jar', name: 'targetfiles'
-    }
+    stage ('Build Artifact') {
+		withMaven(
+			maven: 'maven-3',
+			mavenSettingsConfig: 'my-maven-settings') {
+			sh "mvn clean package"
+		}
+	}
 
     stage('Build Docker Image') {
         /* This builds the actual image; synonymous to
