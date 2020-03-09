@@ -1,6 +1,6 @@
 node {
 
-    withMaven(maven:'maven') {
+    withMaven(maven:'M3') {
 
         stage('Checkout') {
             sh echo "test"
