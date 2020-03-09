@@ -25,7 +25,7 @@ pipeline {
 		stage('Push Image') {
 			agent any
 			steps {
-				withDockerRegistry([ credentialsId: "dockerHub", url: "" ]) {
+				withDockerRegistry([ credentialsId: "docker-hub-credentials", url: "" ]) {
 					sh 'docker push sherwinamihan/data-rest:latest'
 				}
 			}
