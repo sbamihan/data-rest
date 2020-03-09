@@ -34,6 +34,12 @@ node {
         }
     }
     
+    stage('Remove Unused docker image') {
+        steps{
+            sh "docker rmi $registry:$BUILD_NUMBER"
+        }
+    }
+    
     stage ('Run') {
         docker.image("sherwinamihan/data-rest:${env.BUILD_NUMBER}").run('--rm -p 8088:8080 --name data-rest')
     }
