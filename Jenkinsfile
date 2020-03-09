@@ -7,7 +7,7 @@ node {
         checkout scm
     }
 	
-    stage('Build Artifact') {
+	stage('Build Artifact') {
         sh "mvn clean package"
     }
 
@@ -37,4 +37,14 @@ node {
             app.push("latest")
         }
     }
+	
+    stage('Run') {
+       steps {
+       script {
+          docker.image('sherwinamihan/data-rest:latest').withRun('--rm -p 8088:8080') { c->
+             sh 'echo data-rest is now running at http://172.18.13.12:8088'  
+          }
+       }
+    }
+	
 }
