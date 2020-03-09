@@ -9,7 +9,7 @@ pipeline {
 				}
 			}
 			steps {
-				sh 'mvn package'
+				sh 'mvn build package'
 				stash includes: 'target/*.jar', name: 'targetfiles'
 			}
 		}
@@ -25,8 +25,8 @@ pipeline {
 		stage('Push Image') {
 			agent any
 			steps {
-				withDockerRegistry([ credentialsId: "docker-hub-credentials", url: "" ]) {
-					sh 'docker push sherwinamihan/data-rest:latest'
+				withDockerRegistry([ credentialsId: "docker-hub-credentials", url: "https://index.docker.io/v1/" ]) {
+					sh 'docker push sherwinamihan/data-rest:${env.BUILD_NUMBER}'
 				}
 			}
 		}
