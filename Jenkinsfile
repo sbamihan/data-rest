@@ -38,7 +38,7 @@ node {
         }
     }
 	
-    stage('Push Image') {
+    stage('Run') {
         docker.image('sherwinamihan/data-rest:latest').withRun('--rm -p 8088:8080') { c->
             sh 'echo data-rest is now running at http://172.18.13.12:8088'
         }		
