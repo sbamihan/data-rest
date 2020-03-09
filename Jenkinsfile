@@ -6,6 +6,11 @@ node {
 
         checkout scm
     }
+    
+    stage('Build Jar'){
+		sh 'mvn package'
+        stash includes: 'target/*.jar', name: 'targetfiles'
+    }
 
     stage('Build Docker Image') {
         /* This builds the actual image; synonymous to
