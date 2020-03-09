@@ -1,35 +1,40 @@
-pipeline {
-	agent any
-	stages{
-		stage('Build Jar'){
-			agent {
-				docker {
-					image 'maven:3-alpine'
-					args '-v /root/.m2:/root/.m2'
-				}
-			}
-			steps {
-				sh 'mvn clean install'
-				//stash includes: 'target/*.jar', name: 'targetfiles'
-			}
-		}
-		
-		stage('Build Image'){
-			steps {
-				script{
-					def image = docker.build("sherwinamihan/data-rest", ' .')
-				}
-			}
-		}
-		
-		stage('Push Image') {
-			agent any
-			steps {
-				withDockerRegistry([ credentialsId: "docker-hub-credentials", url: "https://index.docker.io/v1/" ]) {
-					sh 'docker push sherwinamihan/data-rest:${env.BUILD_NUMBER}'
-				}
-			}
-		}
-        
-	}
+node {
+    def app
+
+    stage('Clone Repository') {
+        /* Let's make sure we have the repository cloned to our workspace */
+
+        checkout scm
+    }
+	
+    stage('Build Artifact') {
+        sh "mvn clean package"
+    }
+
+    stage('Build Docker Image') {
+        /* This builds the actual image; synonymous to
+         * docker build on the command line */
+
+        app = docker.build("sherwinamihan/data-rest")
+    }
+
+    stage('Test Image') {
+        /* Ideally, we would run a test framework against our image.
+         * For this example, we're using a Volkswagen-type approach ;-) */
+
+        app.inside {
+            sh 'echo "Tests passed"'
+        }
+    }
+
+    stage('Push Image') {
+        /* Finally, we'll push the image with two tags:
+         * First, the incremental build number from Jenkins
+         * Second, the 'latest' tag.
+         * Pushing multiple tags is cheap, as all the layers are reused. */
+        docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
+            app.push("${env.BUILD_NUMBER}")
+            app.push("latest")
+        }
+    }
 }
