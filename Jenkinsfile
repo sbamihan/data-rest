@@ -9,7 +9,7 @@ pipeline {
 				}
 			}
 			steps {
-				sh 'mvn build package'
+				sh 'mvn clean install'
 				stash includes: 'target/*.jar', name: 'targetfiles'
 			}
 		}
