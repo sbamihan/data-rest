@@ -34,13 +34,19 @@ node {
         }
     }
     
+    stage ('Run') {
+        CONTAINER=$1
+        RUNNING=$(docker inspect --format="{{ .State.Running }}" $CONTAINER 2> /dev/null)
+        sh "echo $RUNNING";
+    }
+    
     /*stage('Remove Unused docker image') {
         steps{
             sh "docker rmi $registry:$BUILD_NUMBER"
         }
     }*/
     
-    stage ('Run') {
+    /*stage ('Run') {
         docker.image("sherwinamihan/data-rest:${env.BUILD_NUMBER}").run('--rm -p 8088:8080 --name data-rest')
-    }
+    }*/
 }
