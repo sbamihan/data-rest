@@ -9,7 +9,7 @@ node {
     
     stage ('Build Artifact') {
 		withMaven(
-			maven: 'maven-3',
+			maven: 'M3',
 			mavenSettingsConfig: 'my-maven-settings') {
 			sh "mvn clean package"
 		}
