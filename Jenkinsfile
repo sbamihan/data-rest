@@ -7,7 +7,7 @@ node {
         checkout scm
     }
 	
-	stage('Build Artifact') {
+    stage('Build Artifact') {
         sh "mvn clean package"
     }
 
