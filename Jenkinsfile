@@ -38,9 +38,12 @@ node {
         }
     }
 	
+    stage('Stop Container') {
+       def apiContainer = docker.container('data-rest')
+       apiContainer.stop()
+    }
+	
     stage('Run') {
-	def apiContainer = docker.container('data-rest')
-        apiContainer.stop()
         docker.image('sherwinamihan/data-rest:latest').withRun('-e -Dserver.port=8088 --name data-rest -p 8088:8088') { c->
             sh 'echo data-rest is now running at http://172.18.13.12:8088'
         }		
