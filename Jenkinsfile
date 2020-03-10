@@ -39,8 +39,7 @@ node {
     }
 	
     stage('Stop Container') {
-       def apiContainer = docker.container('data-rest')
-       apiContainer.stop()
+        docker.container('data-rest').stop()
     }
 	
     stage('Run') {
