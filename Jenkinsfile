@@ -39,9 +39,19 @@ node {
     }
 	
     stage('Run') {
+	def apiContainer = docker.container('data-rest')
+        apiContainer.stop()
         docker.image('sherwinamihan/data-rest:latest').withRun('-e -Dserver.port=8088 --name data-rest -p 8088:8088') { c->
             sh 'echo data-rest is now running at http://172.18.13.12:8088'
         }		
     }
+	
+   /*stage('docker stop container') {
+       def apiContainer = docker.container('api-server')
+       apiContainer.stop()
+   }
+   stage('docker run container') {
+       def apiContainer = docker.image("my-docker-id/my-api:${commit_id}").run("--name api-server --link mysql_server:mysql --publish 3100:3100")
+   }*/
 	
 }
