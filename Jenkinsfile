@@ -42,11 +42,12 @@ node {
 	sh 'docker ps -f name=data-rest -q | xargs --no-run-if-empty docker container stop'
 	sh 'docker container ls -a -fname=data-rest -q | xargs -r docker container rm'
 	    
-	//def apiContainer = docker.image("sherwinamihan/data-rest:latest").run("--name data-rest -p 8088:8080")
+	def apiContainer = docker.image("sherwinamihan/data-rest:latest").run("--name data-rest -p 8088:8080")
+        sh 'echo data-rest is now running at http://172.18.13.12:8088'
 	    
-        docker.image('sherwinamihan/data-rest:latest').withRun('--name data-rest -p 8088:8080') { c->
+        /*docker.image('sherwinamihan/data-rest:latest').withRun('--name data-rest -p 8088:8080') { c->
             sh 'echo data-rest is now running at http://172.18.13.12:8088'
-        }		
+        }*/		
     }
 	
    /*stage('docker stop container') {
